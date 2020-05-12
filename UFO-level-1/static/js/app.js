@@ -2,49 +2,61 @@
 var tableData = data;
 
 // YOUR CODE HERE!
-//console.log(tableData)
 
 //set variables
 var button = d3.select("#filter-btn");
-var inputFieldDate = d3.select("#datetime");
-var inputFieldCity = d3.select("#city");
-var tbody_ = d3.select("#tbody");
-var columns = ["datetime", "city", "state", "country", "sahpe", "durationMinutes", "comments"]
+var inputField1 = d3.select("#datetime");
+var inputField2 = d3.select("#city");
+var $tbody = d3.select("tbody");
+var resetbtn = d3.select("#reset-btn");
+var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
 
-//input data into HTML
-var populateData = (dataInput) => {
-    dataInput.forEach(ufo_sightings => {
-        var row = tbody_.append("tr");
-        columns.forEach(column => row.append("td").text(ufo_sightings[column]))
-    }); 
+var populate = (dataInput) => {
+
+  dataInput.forEach(ufo_sightings => {
+    var row = $tbody.append("tr");
+    columns.forEach(column => row.append("td").text(ufo_sightings[column])
+    )
+  });
 }
-//populate the table
-populateData(tableData);
 
-//filter by attribute
+//populate the table 
+populate(data);
+
+//fitle by attribute
 button.on("click", () => {
-    d3.event.preventDefault();
-    var inputdate = inputFieldDate.property("value").trim();
-    var inputcity = inputFieldCity.property("value").toLowerCase().trim();
-    //filter by matching input values
-    var filterdate = data.filter(data => data.datetime === inputdate);
-    console.log(filterdate)
-    var filtercity = data.filter(data => data.city === inputcity);
-    console.log(filtercity)
-    var filterdata = data.filter(data => data.datetime === inputdate && data.city === inputcity);
-    console.log(filterdata)
-//add filtered attributes to table
-    let response = {
-        filterdata, filtercity, filterdate
-    }
-    if (response.filterdata.length !==0) {
-        populateDate(filterdata);
-    }
-    else if (response.filterdata.length === 0 && (response.filtercity.length !==0 || response.filterdate.length !== 0)){
-        populateData(filtercity) || ppopulateData(filterdate);
+  d3.event.preventDefault();
+  var inputDate = inputField1.property("value").trim();
+  var inputCity = inputField2.property("value").toLowerCase().trim();
+  //filter by matching input values
+  var filterDate = data.filter(data => data.datetime === inputDate);
+  console.log(filterDate)
+  var filterCity = data.filter(data => data.city === inputCity);
+  console.log(filterCity)
+  var filterData = data.filter(data => data.datetime === inputDate && data.city === inputCity);
+  console.log(filterData)
+
+  //add filtered ufo sightings to table
+  $tbody.html("");
+
+  let response = {
+    filterData, filterCity, filterDate
+  }
+
+  if (response.filterData.length !== 0) {
+    populate(filterData);
+  }
+    else if (response.filterData.length === 0 && ((response.filterCity.length !== 0 || response.filterDate.length !== 0))){
+      populate(filterCity) || populate(filterDate);
+  
     }
     else {
-        tbody_.append("tr").append("td").text("No results found!");
-
+      $tbody.append("tr").append("td").text("No results found!"); 
     }
+})
+
+resetbtn.on("click", () => {
+  $tbody.html("");
+  populate(data)
+  console.log("Table reset")
 })
