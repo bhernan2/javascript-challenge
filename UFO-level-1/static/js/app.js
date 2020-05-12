@@ -19,7 +19,7 @@ var ufodata = (dataInput) => {
   });
 }
 
-//populate the table 
+//populate table 
 ufodata(data);
 
 //filter by attribute
