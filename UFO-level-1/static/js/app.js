@@ -11,7 +11,7 @@ var $tbody = d3.select("tbody");
 var resetbtn = d3.select("#reset-btn");
 var columns = ["datetime", "city", "state", "country", "shape", "durationMinutes", "comments"]
 
-var populate = (dataInput) => {
+var ufodata = (dataInput) => {
 
   dataInput.forEach(ufo_sightings => {
     var row = $tbody.append("tr");
@@ -21,9 +21,9 @@ var populate = (dataInput) => {
 }
 
 //populate the table 
-populate(data);
+ufodata(data);
 
-//fitle by attribute
+//filter by attribute
 button.on("click", () => {
   d3.event.preventDefault();
   var inputDate = inputField1.property("value").trim();
@@ -44,10 +44,10 @@ button.on("click", () => {
   }
 
   if (response.filterData.length !== 0) {
-    populate(filterData);
+    ufodata(filterData);
   }
     else if (response.filterData.length === 0 && ((response.filterCity.length !== 0 || response.filterDate.length !== 0))){
-      populate(filterCity) || populate(filterDate);
+      ufodata(filterCity) || ufodata(filterDate);
   
     }
     else {
@@ -57,6 +57,6 @@ button.on("click", () => {
 
 resetbtn.on("click", () => {
   $tbody.html("");
-  populate(data)
+  ufodata(data)
   console.log("Table reset")
 })
